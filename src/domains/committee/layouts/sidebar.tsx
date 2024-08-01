@@ -24,7 +24,7 @@ export function CommitteeSidebar({ className }: { className?: string }) {
 				>
 					<DomainSwitcher className="mx-3 mt-3" />
 					<nav className="grow overflow-auto p-3">
-						<SidebarLink href="/u" label="Tableau de bord" />
+						<SidebarLink href="/o" label="Tableau de bord" />
 						<SidebarLink href="/" label="Tableau de bord" />
 						<SidebarLink href="/" label="Tableau de bord" />
 						<SidebarLink href="/" label="Tableau de bord" />
