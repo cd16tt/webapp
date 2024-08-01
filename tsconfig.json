@@ -1,0 +1,67 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		// Vite + React base
+		"composite": true,
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+		"target": "ES2020",
+		"useDefineForClassFields": true,
+		"lib": ["ES2020", "DOM", "DOM.Iterable"],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"skipLibCheck": true,
+		"allowImportingTsExtensions": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"moduleDetection": "force",
+		"noEmit": true,
+		"jsx": "react-jsx",
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		// TS base
+		"verbatimModuleSyntax": true,
+		"forceConsistentCasingInFileNames": true,
+		"esModuleInterop": true,
+		"allowJs": false,
+		// TS strictest
+		"removeComments": true,
+		"strictNullChecks": true,
+		"allowSyntheticDefaultImports": true,
+		"noImplicitAny": true,
+		"strictBindCallApply": true,
+		"strictFunctionTypes": true,
+		"noImplicitThis": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noUncheckedIndexedAccess": true,
+		"exactOptionalPropertyTypes": true,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		// Path aliases
+		"paths": {
+			"#/*": ["./src/*"],
+			"#assets/*": ["./src/assets/*"],
+			"#components/*": ["./src/components/*"],
+			"#config/*": ["./src/config/*"],
+			"#contracts/*": ["./src/contracts/*"],
+			"#errors/*": ["./src/errors/*"],
+			"#domains/*": ["./src/domains/*"],
+			"#hooks/*": ["./src/hooks/*"],
+			"#lib/*": ["./src/lib/*"],
+			"#providers/*": ["./src/providers/*"],
+			"#routes/*": ["./src/routes/*"],
+			"#stores/*": ["./src/stores/*"],
+			"#tests/*": ["./src/tests/*"],
+			"#types/*": ["./src/types/*"],
+			"#utils/*": ["./src/utils/*"]
+		}
+	},
+	"include": ["src", "tests"],
+	"references": [
+		{
+			"path": "./tsconfig.node.json"
+		}
+	]
+}

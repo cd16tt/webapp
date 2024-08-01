@@ -1,0 +1,23 @@
+services:
+    node:
+        build: .
+        image: cd16tt-webapp/node
+        container_name: dev_comitett16_webapp_node
+        entrypoint: 'tail -f /dev/null'
+        labels:
+            caddy: app.comitett16.aaa
+            caddy.tls: internal
+            caddy.reverse_proxy: '{{upstreams 5173}}'
+        networks:
+            - default
+            - global_reverse_proxy
+        restart: unless-stopped
+        volumes:
+            - ./:/home/node/app
+        working_dir: /home/node/app
+
+networks:
+    default:
+        driver: bridge
+    global_reverse_proxy:
+        external: true
