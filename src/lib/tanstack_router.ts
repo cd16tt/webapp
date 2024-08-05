@@ -14,6 +14,8 @@ import { $RefereeLayoutRoute } from '#domains/referee/layouts/referee_layout';
 import { $RefereeDashboardRoute } from '#domains/referee/routes';
 import { $UserLayoutRoute } from '#domains/user/layouts/user_layout';
 import { $UserDashboardRoute } from '#domains/user/routes';
+import { $UserPasswordRoute } from '#domains/user/routes/password';
+import { toastQueue } from '#hooks/use_toast';
 import { Root } from '#routes/__root';
 import { $UiKitRoute } from '#routes/ui-kit';
 
@@ -28,10 +30,18 @@ const routeTree = rootRoute.addChildren([
 	$CommitteeLayoutRoute.addChildren([$CommitteeDashboardRoute]),
 	$PlayerLayoutRoute.addChildren([$PlayerDashboardRoute]),
 	$RefereeLayoutRoute.addChildren([$RefereeDashboardRoute]),
-	$UserLayoutRoute.addChildren([$UserDashboardRoute]),
+	$UserLayoutRoute.addChildren([$UserDashboardRoute, $UserPasswordRoute]),
 ]);
 
 export const router = createRouter({ routeTree });
+
+router.subscribe('onBeforeNavigate', (event) => {
+	for (const toast of toastQueue.visibleToasts) {
+		if (event.toLocation.pathname === toast.content.action?.href) {
+			toastQueue.close(toast.key);
+		}
+	}
+});
 
 declare module '@tanstack/react-router' {
 	interface Register {

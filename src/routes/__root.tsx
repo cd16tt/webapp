@@ -1,9 +1,9 @@
 import { Outlet, useRouter } from '@tanstack/react-router';
 import { RouterProvider } from 'react-aria-components';
-import { Toaster } from 'sonner';
 
 import { CommandPalette } from '#components/molecules/command_palette/command_palette';
 import { TanStackRouterDevtools } from '#lib/router_devtools';
+import { ToastProvider } from '#providers/toast_provider';
 
 export function Root() {
 	const router = useRouter();
@@ -15,7 +15,7 @@ export function Root() {
 				useHref={(to) => router.buildLocation({ to: to ?? '/' }).href}
 			>
 				<Outlet />
-				<Toaster />
+				<ToastProvider />
 				<CommandPalette />
 			</RouterProvider>
 			<TanStackRouterDevtools />

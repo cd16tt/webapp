@@ -1,6 +1,6 @@
 import type { FormEvent } from 'react';
 
-import { useForm as useTanStackForm } from '@tanstack/react-form';
+import { useForm } from '@tanstack/react-form';
 import { createRoute, redirect, useNavigate } from '@tanstack/react-router';
 import { z } from 'zod';
 
@@ -34,7 +34,7 @@ function Login() {
 	const { login } = useAuthActions();
 	const navigate = useNavigate({ from: '/auth/login' });
 
-	const form = useTanStackForm({
+	const form = useForm({
 		defaultValues: {
 			username: '',
 			password: '',
@@ -80,7 +80,7 @@ function Login() {
 
 	return (
 		<>
-			<h1 className="font-secondary text-center text-4xl font-semibold">Connexion utilisateur</h1>
+			<h1 className="text-center text-4xl font-semibold font-secondary">Connexion utilisateur</h1>
 			<p className="mt-2 text-center text-xl text-neutral-5 font-medium">Comité Charente TT</p>
 
 			<Card className="mt-8 border-2 border-neutral-1 border-solid p-8 shadow-xl">

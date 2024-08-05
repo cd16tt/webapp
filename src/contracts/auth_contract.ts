@@ -18,6 +18,11 @@ export const resetPasswordSchema = z.object({
 	password: z.string(),
 });
 
+export const updatePasswordSchema = z.object({
+	oldPassword: z.string(),
+	newPassword: z.string(),
+});
+
 export const authContract = ({ router, type }: ContractInstance) =>
 	router({
 		login: {
@@ -161,5 +166,30 @@ export const authContract = ({ router, type }: ContractInstance) =>
 				}),
 			},
 			body: resetPasswordSchema,
+		},
+		updatePassword: {
+			method: 'PATCH',
+			path: '/auth/password',
+			responses: {
+				204: z.object({}),
+				400: z.object({
+					errors: z.array(
+						z.object({
+							message: z.string(),
+						}),
+					),
+				}),
+				422: z.object({
+					errors: z.array(
+						z.object({
+							field: z.literal('oldPassword').or(z.literal('newPassword')),
+							message: z.string(),
+							meta: z.record(z.string(), z.unknown()),
+							rule: z.string(),
+						}),
+					),
+				}),
+			},
+			body: updatePasswordSchema,
 		},
 	});

@@ -52,3 +52,12 @@ textarea:not([class*='focus-visible']):focus-visible {
 	outline: 0 !important;
 	outline-offset: 0 !important;
 }
+
+@keyframes progress {
+	from {
+		transform: scaleX(1);
+	}
+	to {
+		transform: scaleX(0);
+	}
+}

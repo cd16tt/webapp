@@ -80,7 +80,7 @@ function ResetPassword() {
 
 	return (
 		<>
-			<h1 className="font-secondary text-center text-4xl font-semibold">Réinitialisation de mot de passe</h1>
+			<h1 className="text-center text-4xl font-semibold font-secondary">Réinitialisation de mot de passe</h1>
 			<p className="mt-2 text-center text-xl text-neutral-5 font-medium">Comité Charente TT</p>
 
 			<Card className="mt-8 border-2 border-neutral-1 border-solid p-8 shadow-xl">

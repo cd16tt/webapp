@@ -25,10 +25,10 @@ export function Header(props: HeaderProps) {
 					variant="ghost"
 					intent="brand"
 					onPress={toggleSidebar}
-					icon={isSidebarOpen ? 'i-heroicons:x-mark' : 'i-heroicons:bars-3-16-solid'}
+					icon={isSidebarOpen ? 'i-heroicons:x-mark-solid' : 'i-heroicons:bars-3-16-solid'}
 					tooltip={isSidebarOpen ? 'Masquer la barre latérale' : 'Afficher la barre latérale'}
 				/>
-				<p className="font-secondary text-xl font-medium">{headerTitle}</p>
+				<p className="translate-y-[1px] text-lg font-semibold leading-none font-primary uppercase">{headerTitle}</p>
 			</div>
 			<div className="flex items-center justify-end gap-2">
 				<NotificationsWindow />
