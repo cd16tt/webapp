@@ -1,5 +1,12 @@
 import { z } from 'zod';
 
+import {
+	BAD_REQUEST_SCHEMA,
+	NO_CONTENT_SCHEMA,
+	NOT_FOUND_SCHEMA,
+	UNAUTHORIZED_SCHEMA,
+	VALIDATION_OBJECT,
+} from '#contracts/index';
 import type { ContractInstance } from '#types/utils';
 import type { Permission } from '#utils/security';
 
@@ -23,6 +30,10 @@ export const updatePasswordSchema = z.object({
 	newPassword: z.string(),
 });
 
+export const updateUsernameSchema = z.object({
+	username: z.string(),
+});
+
 export const authContract = ({ router, type }: ContractInstance) =>
 	router({
 		login: {
@@ -36,20 +47,12 @@ export const authContract = ({ router, type }: ContractInstance) =>
 					licenseCode: z.string(),
 					permissions: z.array(z.string().transform((value) => value as Permission)),
 				}),
-				400: z.object({
-					errors: z.array(
-						z.object({
-							message: z.string(),
-						}),
-					),
-				}),
+				400: BAD_REQUEST_SCHEMA,
 				422: z.object({
 					errors: z.array(
 						z.object({
 							field: z.literal('username').or(z.literal('password')).or(z.literal('remember')),
-							message: z.string(),
-							meta: z.record(z.string(), z.unknown()),
-							rule: z.string(),
+							...VALIDATION_OBJECT,
 						}),
 					),
 				}),
@@ -60,7 +63,7 @@ export const authContract = ({ router, type }: ContractInstance) =>
 			method: 'POST',
 			path: '/auth/logout',
 			responses: {
-				204: z.object({}),
+				204: NO_CONTENT_SCHEMA,
 			},
 			body: type<never>(),
 		},
@@ -75,34 +78,20 @@ export const authContract = ({ router, type }: ContractInstance) =>
 					licenseCode: z.string(),
 					permissions: z.array(z.string().transform((value) => value as Permission)),
 				}),
-				401: z.object({
-					errors: z.array(
-						z.object({
-							message: z.string(),
-						}),
-					),
-				}),
+				401: UNAUTHORIZED_SCHEMA,
 			},
 		},
 		forgotPassword: {
 			method: 'POST',
 			path: '/auth/forgot-password',
 			responses: {
-				204: z.object({}),
-				400: z.object({
-					errors: z.array(
-						z.object({
-							message: z.string(),
-						}),
-					),
-				}),
+				204: NO_CONTENT_SCHEMA,
+				400: BAD_REQUEST_SCHEMA,
 				422: z.object({
 					errors: z.array(
 						z.object({
 							field: z.literal('license').or(z.literal('email')),
-							message: z.string(),
-							meta: z.record(z.string(), z.unknown()),
-							rule: z.string(),
+							...VALIDATION_OBJECT,
 						}),
 					),
 				}),
@@ -119,21 +108,9 @@ export const authContract = ({ router, type }: ContractInstance) =>
 				signature: z.string(),
 			}),
 			responses: {
-				204: z.object({}),
-				400: z.object({
-					errors: z.array(
-						z.object({
-							message: z.string(),
-						}),
-					),
-				}),
-				404: z.object({
-					errors: z.array(
-						z.object({
-							message: z.string(),
-						}),
-					),
-				}),
+				204: NO_CONTENT_SCHEMA,
+				400: BAD_REQUEST_SCHEMA,
+				404: NOT_FOUND_SCHEMA,
 			},
 		},
 		resetPassword: {
@@ -146,21 +123,13 @@ export const authContract = ({ router, type }: ContractInstance) =>
 				signature: z.string(),
 			}),
 			responses: {
-				204: z.object({}),
-				400: z.object({
-					errors: z.array(
-						z.object({
-							message: z.string(),
-						}),
-					),
-				}),
+				204: NO_CONTENT_SCHEMA,
+				400: BAD_REQUEST_SCHEMA,
 				422: z.object({
 					errors: z.array(
 						z.object({
 							field: z.literal('password'),
-							message: z.string(),
-							meta: z.record(z.string(), z.unknown()),
-							rule: z.string(),
+							...VALIDATION_OBJECT,
 						}),
 					),
 				}),
@@ -171,25 +140,40 @@ export const authContract = ({ router, type }: ContractInstance) =>
 			method: 'PATCH',
 			path: '/auth/password',
 			responses: {
-				204: z.object({}),
-				400: z.object({
-					errors: z.array(
-						z.object({
-							message: z.string(),
-						}),
-					),
-				}),
+				204: NO_CONTENT_SCHEMA,
+				400: BAD_REQUEST_SCHEMA,
 				422: z.object({
 					errors: z.array(
 						z.object({
 							field: z.literal('oldPassword').or(z.literal('newPassword')),
-							message: z.string(),
-							meta: z.record(z.string(), z.unknown()),
-							rule: z.string(),
+							...VALIDATION_OBJECT,
 						}),
 					),
 				}),
 			},
 			body: updatePasswordSchema,
+		},
+		updateUsername: {
+			method: 'PATCH',
+			path: '/auth/username',
+			responses: {
+				200: z.object({
+					uid: z.string(),
+					firstname: z.string(),
+					lastname: z.string(),
+					licenseCode: z.string(),
+					permissions: z.array(z.string().transform((value) => value as Permission)),
+				}),
+				400: BAD_REQUEST_SCHEMA,
+				422: z.object({
+					errors: z.array(
+						z.object({
+							field: z.literal('username'),
+							...VALIDATION_OBJECT,
+						}),
+					),
+				}),
+			},
+			body: updateUsernameSchema,
 		},
 	});

@@ -1,28 +1,30 @@
+import type { FormEvent } from 'react';
+
 import { useForm } from '@tanstack/react-form';
 import { createRoute } from '@tanstack/react-router';
-import { type FormEvent } from 'react';
 import { z } from 'zod';
 
 import { Banner } from '#components/atoms/banner/banner';
 import { Button } from '#components/atoms/button/button';
-import { PasswordInput } from '#components/forms/password_input/password_input';
+import { TextInput } from '#components/forms/text_input/text_input';
 import { validatorAdapter } from '#components/forms/validator_adapter';
 import { $UserLayoutRoute } from '#domains/user/layouts/user_layout';
 import { MEDIUM_TOAST_DELAY, toast } from '#hooks/use_toast';
 import { apiClient } from '#lib/query_client';
+import { useAuthActions } from '#stores/auth_store';
 
-export const $UserPasswordRoute = createRoute({
+export const $UserUsernameRoute = createRoute({
 	getParentRoute: () => $UserLayoutRoute,
-	path: '/u/password',
-	component: UserPasswordRoute,
+	path: '/u/username',
+	component: UserUsername,
 });
 
-function UserPasswordRoute() {
-	const mutation = apiClient.auth.updatePassword.useMutation();
+function UserUsername() {
+	const mutation = apiClient.auth.updateUsername.useMutation();
+	const { login } = useAuthActions();
 	const form = useForm({
 		defaultValues: {
-			oldPassword: '',
-			newPassword: '',
+			username: '',
 		},
 		validatorAdapter,
 		onSubmit: ({ value, formApi }) => {
@@ -31,12 +33,13 @@ function UserPasswordRoute() {
 					body: value,
 				},
 				{
-					onSuccess: () => {
+					onSuccess: (data) => {
 						toast.success({
-							title: 'Votre mot de passe a été modifié avec succès.',
+							title: "Votre nom d'utilisateur a été modifié.",
 							delay: MEDIUM_TOAST_DELAY,
 						});
 						formApi.reset();
+						login(data.body);
 					},
 					onError: (error) => {
 						if (error.status === 400) {
@@ -64,45 +67,25 @@ function UserPasswordRoute() {
 		event.stopPropagation();
 		void form.handleSubmit();
 	};
-
 	return (
 		<div className="mx-auto max-w-lg pt-4">
-			<h1 className="mb-8 font-secondary">Modifier mon mot de passe</h1>
+			<h1 className="mb-8 font-secondary">Modifier mon nom d'utilisateur</h1>
 			<form onSubmit={handleFormSubmit} className="space-y-5">
 				<Banner variant="danger" title="Erreur sur le formulaire" messages={form.state.errors.map(String)} />
 				<form.Field
-					name="oldPassword"
+					name="username"
 					validators={{
 						onChange: z.string(),
 					}}
 					children={(field) => (
-						<PasswordInput
+						<TextInput
 							name={field.name}
-							label="Mot de passe actuel"
+							label="Nom d'utilisateur souhaité"
 							value={field.state.value}
 							onBlur={field.handleBlur}
 							onChange={(value) => field.handleChange(value)}
 							errors={field.state.meta.errors}
 							autoFocus
-							isRequired
-							isInvalid={field.state.meta.errors.length > 0}
-						/>
-					)}
-				/>
-				<form.Field
-					name="newPassword"
-					asyncDebounceMs={1000}
-					validators={{
-						onChange: z.string(),
-					}}
-					children={(field) => (
-						<PasswordInput
-							name={field.name}
-							label="Nouveau mot de passe"
-							value={field.state.value}
-							onBlur={field.handleBlur}
-							onChange={(value) => field.handleChange(value)}
-							errors={field.state.meta.errors}
 							isRequired
 							isInvalid={field.state.meta.errors.length > 0}
 						/>

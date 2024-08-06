@@ -15,6 +15,7 @@ export const $UserLayoutRoute = createRoute({
 
 const tabLinks: TabsProps['links'] = [
 	{ label: 'Informations personnelles', href: '/u' },
+	{ label: "Nom d'utilisateur", href: '/u/username' },
 	{
 		label: 'Mot de passe',
 		href: '/u/password',

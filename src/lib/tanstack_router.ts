@@ -15,6 +15,7 @@ import { $RefereeDashboardRoute } from '#domains/referee/routes';
 import { $UserLayoutRoute } from '#domains/user/layouts/user_layout';
 import { $UserDashboardRoute } from '#domains/user/routes';
 import { $UserPasswordRoute } from '#domains/user/routes/password';
+import { $UserUsernameRoute } from '#domains/user/routes/username';
 import { toastQueue } from '#hooks/use_toast';
 import { Root } from '#routes/__root';
 import { $UiKitRoute } from '#routes/ui-kit';
@@ -30,7 +31,7 @@ const routeTree = rootRoute.addChildren([
 	$CommitteeLayoutRoute.addChildren([$CommitteeDashboardRoute]),
 	$PlayerLayoutRoute.addChildren([$PlayerDashboardRoute]),
 	$RefereeLayoutRoute.addChildren([$RefereeDashboardRoute]),
-	$UserLayoutRoute.addChildren([$UserDashboardRoute, $UserPasswordRoute]),
+	$UserLayoutRoute.addChildren([$UserDashboardRoute, $UserUsernameRoute, $UserPasswordRoute]),
 ]);
 
 export const router = createRouter({ routeTree });

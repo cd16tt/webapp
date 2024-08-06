@@ -60,3 +60,5 @@ export const toast = {
 			});
 	},
 };
+
+export const MEDIUM_TOAST_DELAY = 5_000;
